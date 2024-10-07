@@ -9,6 +9,7 @@ from animal import Animal
 from avaliacao import Avaliacao
 from sqlalchemy.orm import sessionmaker
 from textblob import TextBlob
+from googletrans import Translator
 # definindo objeto flask
 app = Flask(__name__)
 
@@ -93,21 +94,23 @@ def inserir_animal():
 
 @app.route('/cadastraravaliacao',methods=['POST','GET'])
 def cadastrar_avaliacao(): 
-    sessao_db_cl = Session() 
-    try:
-        # passo 1 - pegar do HTML
-        texto = request.form['texto']
-        # passo 2 - pegar a polaridade
-        blob = TextBlob(texto)
-        polaridade = blob.sentiment.polarity
-        avaliacao = Avaliacao(texto,polaridade) 
+    texto = request.form['texto']
     
-        session_db.add(avaliacao)
-        session_db.commit()
+    session_db_cl = Session() 
+    blob_pt = TextBlob(texto)
+    texto_traduzido = blob_pt.translate(from_lang='pt',to='en')
+# passando o texto traduzido
+    blob_en = TextBlob(str(texto_traduzido))
+    polaridade = blob_en.sentiment.polarity
+    avaliacao = Avaliacao(avaliacao=texto_traduzido,polaridade=polaridade)
+
+    try:
+        session_db_cl .add(avaliacao)
+        session_db_cl.commit()
     except:
-        session_db.rollback()
+        session_db_cl.rollback()
     finally:
-        session_db.close()
+        session_db_cl.close()
     return redirect(url_for('mostrar_avaliacao'))
         
         
@@ -120,6 +123,16 @@ def mostrar_avaliacao ():
 # definindo com o programa principal 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+# Desafios
+# O Usuario vai digitar em portugues , voce vai traduzir pro Ingles
+# textblob trata a polaridade em ingles.
+
+# traduçao portugues para o ingles
+
+
+
 
 
 
