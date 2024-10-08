@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="2">
+    </thead>
+    <tbody>
+   
+<tr>
+    <th>texto</th>
+    <th>polaridade</th>
+
+    <th>sentimento</th>
+</tr>
+    <tbody>
+    </thead>
+        <tbody>
+            {% for avalia in avaliacoes %}
+            <tr>
+            <td>{{avalia.avaliacao}}</td>
+
+            <td>{{avalia.polaridade}}</td>
+            
+            {%if avalia.polaridade > 0%}
+                <td>🥰</td>
+            {%elif avalia.polaridade < 0 %}
+            <td>😎</td>
+
+            {%else %}
+                <td>😐</td>
+            {%endif%}
+
+            </tr>
+            {%endfor%}
+
+        </table>
+</body>
+</html>

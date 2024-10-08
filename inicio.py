@@ -111,7 +111,7 @@ def cadastrar_avaliacao():
         session_db_cl.rollback()
     finally:
         session_db_cl.close()
-    return redirect(url_for('mostrar_avaliacao'))
+    return redirect(url_for('listar_avaliacao'))
         
         
 @app.route("/avaliacao")
@@ -120,9 +120,7 @@ def mostrar_avaliacao ():
                                       
 
 
-# definindo com o programa principal 
-if __name__ == "__main__":
-    app.run(debug=True)
+
 
 
 # Desafios
@@ -131,8 +129,19 @@ if __name__ == "__main__":
 
 # traduçao portugues para o ingles
 
+@app.route("/listaravaliacao")
+def listar_avaliacao():
+    session_db = Session()
+    avaliacoes=session_db.query(Avaliacao).all()
+    return render_template("listaavaliacao.html",avaliacoes = avaliacoes)
 
 
 
 
 
+
+
+
+ # definindo com o programa principal 
+if __name__ == "__main__":
+    app.run(debug=True)   
